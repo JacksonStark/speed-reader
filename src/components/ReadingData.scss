@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
+
+.reading-data {
+
+  // MAY BE ABLE TO MOVE THE FONT FAMILY TO GLOBAL VIEW
+  h1, input, textarea {
+    font-family: 'Montserrat', 'sans-serif';
+  }
+
+  
+  input, textarea {
+    width: 20%;
+    text-align: center;
+    border: 0;
+    border-radius: 18px;
+    padding: 20px;
+    font-size: 1.2em;
+    height: 20px;
+    background-color: #323333;
+    color: #687f7f;
+    opacity: 0.8;
+    transition: opacity 1s, box-shadow 0.5s;
+  }
+  
+  textarea {
+    width: 40%;
+    height: 40%;
+    text-align: left;
+  }
+
+  input:hover, textarea:hover {
+    font-weight: 400;
+    box-shadow: 5px 5px 5px aqua;
+    opacity: 1;
+    transition: opacity 1s, box-shadow 0.5s;
+  }
+  
+  input:focus, textarea:focus {
+    outline: none;
+  }
+}

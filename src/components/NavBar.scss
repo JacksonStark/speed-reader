@@ -1,0 +1,14 @@
+@import url('https://fonts.googleapis.com/css?family=Bungee&display=swap');
+
+.nav-bar {
+
+  display: flex;
+  justify-content: space-around;
+  margin-left: 20px;
+
+
+  .logo {
+    font-family: 'Bungee', 'sans-serif';
+    font-size: 48px;
+  }
+}
