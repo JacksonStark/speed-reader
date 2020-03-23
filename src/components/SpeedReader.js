@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import './SpeedReader.scss'
+import useVisualMode from '../hooks/useVisualMode.js';
 
 
 export default function SpeedReader({ trimmedData, readingSpeed, chunkSize, setReading }) {
   const [displayData, setDisplayData] = useState(trimmedData)
   const [displayWords, setDisplayWords] = useState('')
+
+  const {} = useVisualMode(trimmedData)
   
   // runs every render, where it'll take off the first five words
   useEffect(() => {

@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
 
+@mixin phone-size {
+  @media (max-width: 600px) { @content; };
+}
+
 .reading-data {
 
   
@@ -7,6 +11,10 @@
     display: flex;
     justify-content: space-around;
     margin-bottom: 40px;
+
+    @include phone-size {
+      flex-direction: column;
+    }
   }
 
   .speed-data-header {
@@ -31,10 +39,15 @@
     color: #687f7f;
     opacity: 0.8;
     transition: opacity 1s, box-shadow 0.5s;
+    
+    @include phone-size {
+      width: 30%;
+    }
   }
   
   textarea {
-    width: 35%;
+    width: 45%;
+    font-size: 1em;
     height: 200px;
     text-align: left;
   }
