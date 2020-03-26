@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import "./ReadingData.scss";
 import SpeedReader from "./SpeedReader.js";
+import chunker from '../helpers/chunker.js';
+// 🔴 implement chunker before setting reader data state... 🔴
 
 export default function ReadingData() {
   const [speedData, setSpeedData] = useState(
@@ -15,10 +17,12 @@ export default function ReadingData() {
   function startReading() {
 
     // removing unwanted words from speedData
-    let modifiedData = speedData.replace(excludedWords, '').split(' ');
+    let cleansedData = speedData.replace(excludedWords, '').split(' ');
+    let chunkedData = chunker(cleansedData, chunkSize);
+
 
     // modified speedData is set to be passed to SpeedReader
-    setReaderData(modifiedData);
+    setReaderData(chunkedData);
     setReading(true);
   }
 
