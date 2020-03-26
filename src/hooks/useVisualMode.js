@@ -1,19 +1,29 @@
 import { useState } from "react";
 
-export default function useVisualMode(initial) {
-  const [index, setIndex] = useState([])
-  const [chunk, setChunk] = useState(0);
-  const [list, setList] = useState(initial);
+export default function useVisualMode(chunkedData) {
+  const [index, setIndex] = useState(0)
+  const [displayChunk, setDisplayChunk] = useState(chunkedData[0].join(' '));
+  const [list, setList] = useState(chunkedData);
+  const [finished, setFinished] = useState(false);
+  
 
   function forward() {
+    if (index === list.length - 1) {
+      setFinished(true)
+    } else {
       setIndex(prevIndex => prevIndex + 1);
-      setChunk(prevChunk => list[prevChunk + 1]);
+      setDisplayChunk(() => list[index + 1].join(' '));
+    }
   }
 
   function back() {
-    setIndex(prevIndex => prevIndex + 1);
-    setChunk(prevChunk => list[prevChunk + 1]);
+    if (index === 0) {
+      return;
+    } else {
+      setIndex(prevIndex => prevIndex - 1);
+      setDisplayChunk(() => list[index - 1].join(' '));
+    }
   }
 
-  return { index, chunk, back, forward };
+  return { displayChunk, back, forward, finished };
 }
