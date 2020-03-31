@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useContext } from 'react'
+import { ReaderContext } from './ReadingData'
 import './SpeedReader.scss'
 import useVisualMode from '../hooks/useVisualMode.js';
 import useKeyPress from '../hooks/useKeyPress.js';
@@ -6,10 +7,9 @@ import useKeyPress from '../hooks/useKeyPress.js';
 
 
 export default function SpeedReader({ trimmedData, readingSpeed, chunkSize, setReading }) {
-  // const [displayData, setDisplayData] = useState(trimmedData)
-  // const [displayWords, setDisplayWords] = useState('')
   const { displayChunk, forward, back, finished } = useVisualMode(trimmedData)
   const { pausePress, backPress, forwardPress, setBackPress, setForwardPress } = useKeyPress()
+  const { state, dispatch } = useContext(ReaderContext);
 
   
   // runs every render, where it'll take off the first five words
@@ -21,10 +21,8 @@ export default function SpeedReader({ trimmedData, readingSpeed, chunkSize, setR
     let timeout;
     
     if (finished) {
-      setTimeout(() => setReading(false), timeoutTime)
+      setTimeout(() => dispatch({ type: "SET_READING_STATUS", value: false }), timeoutTime)
     }
-
-
 
     if (pausePress) {
       console.log("in SpeedReader.js pausePress IF")
@@ -42,7 +40,6 @@ export default function SpeedReader({ trimmedData, readingSpeed, chunkSize, setR
       // else continue with speed reading timeouts
       timeout = setTimeout(() => {
         forward()
-        // setDisplayWords(chunk.join(' '));
       }, timeoutTime);
     }
 
