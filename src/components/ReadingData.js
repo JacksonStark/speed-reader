@@ -1,80 +1,86 @@
-import React, { useState } from "react";
+import React, { useState, useReducer, useContext } from "react";
+import reducer, { initialState } from '../reducers/app-reducer'
+import chunker from '../helpers/chunker';
+import SpeedReader from "./SpeedReader";
 import "./ReadingData.scss";
-import SpeedReader from "./SpeedReader.js";
-import chunker from '../helpers/chunker.js';
-// 🔴 implement chunker before setting reader data state... 🔴
+
+export const ReaderContext = React.createContext()
 
 export default function ReadingData() {
-  const [speedData, setSpeedData] = useState(
-    "last night i went to the bar and found something fancy. i grabbed it and it turned out it was thousands of dollars."
-  );
-  const [readingSpeed, setReadingSpeed] = useState(300);
-  const [excludedWords, setExcludedWords] = useState("the");
-  const [chunkSize, setChunkSize] = useState(3);
-  const [readerData, setReaderData] = useState('')
-  const [reading, setReading] = useState(false);
+  const [state, dispatch] = useReducer(reducer, initialState)
+
+  const { rawData, readerData, readingSpeed, excludedWords, chunkSize, readingStatus } = state
 
   function startReading() {
 
     // removing unwanted words from speedData
-    let cleansedData = speedData.replace(excludedWords, '').split(' ');
+    let cleansedData = rawData.replace(excludedWords, '').split(' ');
     let chunkedData = chunker(cleansedData, chunkSize);
 
-
     // modified speedData is set to be passed to SpeedReader
-    setReaderData(chunkedData);
-    setReading(true);
+
+    // setReaderData(chunkedData);
+    dispatch({ type: "SET_READER_DATA", value: chunkedData });
+    // setReading(true);
+    dispatch({ type: "SET_READING_STATUS", value: true });
   }
 
   return (
-    <div className="reading-data">
-      {reading === true ? (
-        <SpeedReader
-          trimmedData={readerData}
-          readingSpeed={readingSpeed}
-          chunkSize={chunkSize}
-          setReading={setReading}
-        />
-      ) : (
-        <>
-          <h1 className="speed-data-header">Speed Reading Text</h1>
-          <textarea onChange={e => setSpeedData(e.target.value)} value={speedData}></textarea>
-        </>
-      )}
+    <ReaderContext.Provider value={{ state, dispatch }}>
+      <div className="reading-data">
+        <div className="display-data">
+          {readingStatus === true ? (
+            <SpeedReader
+              filteredData={readerData}
+              readingSpeed={readingSpeed}
+              chunkSize={chunkSize}
+            />
+          ) : (
+            <>
+              <h1 className="speed-data-header">Speed Reading Text</h1>
+              <textarea 
+                onChange={e => dispatch({ type: "SET_RAW_DATA", value: e.target.value })} 
+                value={rawData}
+              >
+              </textarea>
+            </>
+          )}
+        </div>
 
-      <div className="configurations">
-        <section>
-          <h1>Reading Speed</h1>
-          <input
-            type="text"
-            placeholder="eg. '800'"
-            onChange={e => setReadingSpeed(e.target.value)}
-            value={readingSpeed}
-          />
-        </section>
+        <div className="configurations">
+          <section>
+            <h1>Reading Speed</h1>
+            <input
+              type="text"
+              placeholder="eg. '800'"
+              onChange={e => dispatch({ type: "SET_READING_SPEED", value: e.target.value })} 
+              value={readingSpeed}
+            />
+          </section>
 
-        <section>
-          <h1>Excluded Words</h1>
-          <input
-            type="text"
-            placeholder="eg. 'the it and'"
-            onChange={e => setExcludedWords(e.target.value)}
-            value={excludedWords}
-          />
-        </section>
+          <section>
+            <h1>Excluded Words</h1>
+            <input
+              type="text"
+              placeholder="eg. 'the it and'"
+              onChange={e => dispatch({ type: "SET_EXCLUDED_WORDS", value: e.target.value })} 
+              value={excludedWords}
+            />
+          </section>
 
-        <section>
-          <h1>Chunk Size</h1>
-          <input
-            type="text"
-            placeholder="eg. '3'"
-            onChange={e => setChunkSize(e.target.value)}
-            value={chunkSize}
-          />
-        </section>
+          <section>
+            <h1>Chunk Size</h1>
+            <input
+              type="text"
+              placeholder="eg. '3'"
+              onChange={e => dispatch({ type: "SET_CHUNK_SIZE", value: e.target.value })} 
+              value={chunkSize}
+            />
+          </section>
+        </div>
+
+        <button onClick={() => startReading()}>Start Reading</button>
       </div>
-
-      <button onClick={() => startReading()}>Start Reading</button>
-    </div>
+    </ReaderContext.Provider>
   );
 }
