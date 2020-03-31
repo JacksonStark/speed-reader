@@ -6,7 +6,16 @@
 
 .reading-data {
 
-  
+  .display-data {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 45%;
+    height: 333px;
+    // text-align: center;
+    margin: 0 auto;
+  }
+
   .configurations {
     display: flex;
     justify-content: space-around;
@@ -27,9 +36,6 @@
   }
 
   input, textarea {
-    width: 60%;
-    height: 20px;
-    font-size: 1.2em;
     text-align: center;
     border: 0;
     border-radius: 18px;
@@ -44,11 +50,16 @@
       width: 30%;
     }
   }
+
+  input {
+    width: 60%;
+    height: 20px;
+    font-size: 1.2em;
+  }
   
   textarea {
-    width: 45%;
+    height: 100%;
     font-size: 1em;
-    height: 200px;
     text-align: left;
   }
 
