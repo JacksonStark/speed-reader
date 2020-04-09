@@ -89,7 +89,7 @@ export default function ReadingData() {
               : <input
                   type="text"
                   placeholder="eg. '3'"
-                  onChange={e => dispatch({ type: "SET_CHUNK_SIZE", value: e.target.value })} 
+                  onChange={e => dispatch({ type: "SET_CHUNK_SIZE", value: Number(e.target.value) })} 
                   value={chunkSize}
                 />
             }
