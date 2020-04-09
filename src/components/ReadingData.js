@@ -1,7 +1,9 @@
 import React, { useState, useReducer, useContext } from "react";
-import reducer, { initialState } from '../reducers/app-reducer'
+import reducer, { initialState } from '../reducers/reading-reducer'
 import chunker from '../helpers/chunker';
+import stringFilter from '../helpers/stringFilter'
 import SpeedReader from "./SpeedReader";
+import Button from "./Button";
 import "./ReadingData.scss";
 
 export const ReaderContext = React.createContext()
@@ -13,16 +15,23 @@ export default function ReadingData() {
 
   function startReading() {
 
-    // removing unwanted words from speedData
-    let cleansedData = rawData.replace(excludedWords, '').split(' ');
-    let chunkedData = chunker(cleansedData, chunkSize);
+    if (readingStatus) {
+      dispatch({ type: "SET_READING_STATUS", value: false });
 
-    // modified speedData is set to be passed to SpeedReader
+    } else {
+      dispatch({ type: "SET_READING_STATUS", value: true });
 
-    // setReaderData(chunkedData);
-    dispatch({ type: "SET_READER_DATA", value: chunkedData });
-    // setReading(true);
-    dispatch({ type: "SET_READING_STATUS", value: true });
+      if (readerData.length === 0) {
+        // removing unwanted words from rawData
+        let cleansedData = stringFilter(rawData, excludedWords)
+        
+        console.log({cleansedData})
+        
+        // modified rawData is set to be passed to SpeedReader
+        let chunkedData = chunker(cleansedData, chunkSize);
+        dispatch({ type: "SET_READER_DATA", value: chunkedData });
+      }
+    }
   }
 
   return (
@@ -31,9 +40,8 @@ export default function ReadingData() {
         <div className="display-data">
           {readingStatus === true ? (
             <SpeedReader
-              filteredData={readerData}
-              readingSpeed={readingSpeed}
-              chunkSize={chunkSize}
+              readerData={readerData}
+              timeoutTime={(60000 / readingSpeed) * chunkSize}
             />
           ) : (
             <>
@@ -49,37 +57,56 @@ export default function ReadingData() {
 
         <div className="configurations">
           <section>
-            <h1>Reading Speed</h1>
-            <input
-              type="text"
-              placeholder="eg. '800'"
-              onChange={e => dispatch({ type: "SET_READING_SPEED", value: e.target.value })} 
-              value={readingSpeed}
-            />
+            <h1 className={readingStatus ? "setting" : null}>Reading Speed</h1>
+            { readingStatus 
+              ? <h1 className="info-card">{readingSpeed}</h1>
+              : <input
+                  type="text"
+                  placeholder="eg. '800'"
+                  onChange={e => dispatch({ type: "SET_READING_SPEED", value: Number(e.target.value) })} 
+                  value={readingSpeed}
+                />
+            }
           </section>
 
           <section>
-            <h1>Excluded Words</h1>
-            <input
-              type="text"
-              placeholder="eg. 'the it and'"
-              onChange={e => dispatch({ type: "SET_EXCLUDED_WORDS", value: e.target.value })} 
-              value={excludedWords}
-            />
+            <h1 className={readingStatus ? "setting" : null}>Excluded Words</h1>
+            { readingStatus 
+              ? <div className="info-card">{excludedWords}</div>
+              : <input
+                  type="text"
+                  placeholder="eg. 'the it and'"
+                  onChange={e => dispatch({ type: "SET_EXCLUDED_WORDS", value: e.target.value })} 
+                  value={excludedWords}
+                />
+            }
           </section>
 
           <section>
-            <h1>Chunk Size</h1>
-            <input
-              type="text"
-              placeholder="eg. '3'"
-              onChange={e => dispatch({ type: "SET_CHUNK_SIZE", value: e.target.value })} 
-              value={chunkSize}
-            />
+            <h1 className={readingStatus ? "setting" : null}>Chunk Size</h1>
+            { readingStatus 
+              ? <h1 className="info-card">{chunkSize}</h1>
+              : <input
+                  type="text"
+                  placeholder="eg. '3'"
+                  onChange={e => dispatch({ type: "SET_CHUNK_SIZE", value: e.target.value })} 
+                  value={chunkSize}
+                />
+            }
           </section>
+
         </div>
+        {/* <button onClick={() => toggleReading()}>Start Reading</button> */}
+        { !readingStatus ? <Button onClick={() => startReading()} /> : (
+          <div className="instructions">
+            <p><strong>r</strong> - restart</p>
+            <p><strong>space</strong> - read/pause</p>
+            <p><strong>n</strong> - new text</p>
+            <p><strong>use ← →</strong> to skip back or ahead</p>
+            <p><strong>use ↑ ↓</strong> to increase or decrease wpm x25</p>
+          </div>
+        )}
 
-        <button onClick={() => startReading()}>Start Reading</button>
       </div>
     </ReaderContext.Provider>
   );
