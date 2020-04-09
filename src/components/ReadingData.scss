@@ -4,6 +4,10 @@
   @media (max-width: 600px) { @content; };
 }
 
+@mixin desktop {
+  @media (min-width: 601px) { @content; };
+}
+
 .reading-data {
 
   .display-data {
@@ -12,7 +16,6 @@
     flex-direction: column;
     width: 45%;
     height: 333px;
-    // text-align: center;
     margin: 0 auto;
   }
 
@@ -20,6 +23,8 @@
     display: flex;
     justify-content: space-around;
     margin-bottom: 40px;
+    // max-width: 900px;
+    // margin: 0 auto;
 
     @include phone-size {
       flex-direction: column;
@@ -28,6 +33,43 @@
 
   .speed-data-header {
     font-size: 30px;
+  }
+
+  .info-card {
+    font-family: 'Bungee';
+    font-size: 1.5em;
+    color: rgba(0,0,0,0.5);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .setting {
+    font-family: 'Bungee';
+    color: rgba(0,0,0,0.3);
+  }
+  
+  .instructions {
+    display: flex;
+    justify-content: space-around;
+    font-family: 'Montserrat', 'sans-serif';
+    flex-wrap: wrap;
+    max-width: 60%;
+    margin: 0 auto;
+    margin-left: 23%;
+
+    p {
+      margin-right: 5%;
+    }
+  }
+
+  
+  section {
+    @include desktop {
+      max-width: 300px;
+      max-height: 200px;
+      margin: 0 auto;
+    }
   }
 
   // MAY BE ABLE TO MOVE THE FONT FAMILY TO GLOBAL VIEW
@@ -39,28 +81,32 @@
     text-align: center;
     border: 0;
     border-radius: 18px;
-    margin-bottom: 20px;
     padding: 20px;
+    margin-bottom: 20px;
     background-color: #323333;
     color: #687f7f;
     opacity: 0.8;
     transition: opacity 1s, box-shadow 0.5s;
     
-    @include phone-size {
-      width: 30%;
-    }
   }
-
+  
   input {
     width: 60%;
     height: 20px;
     font-size: 1.2em;
+    @include phone-size {
+      width: 50%;
+    }
   }
   
   textarea {
     height: 100%;
     font-size: 1em;
     text-align: left;
+
+    @include phone-size {
+      width: 82%;
+    }
   }
 
   input:hover, textarea:hover {
@@ -68,20 +114,6 @@
     box-shadow: 5px 5px 5px aqua;
     opacity: 1;
     transition: opacity 1s, box-shadow 0.5s;
-  }
-  
-  button {
-    cursor: pointer;
-    border: 3px solid black;
-    border-radius: 25px;
-    padding: 8px;
-    font-size: 24px;
-    background-color: cornflowerblue;
-    font-family: 'Bungee', 'sans-serif';
-  }
-
-  button:active {
-    opacity: 0.5
   }
 
   input:focus, textarea:focus, button:focus {
