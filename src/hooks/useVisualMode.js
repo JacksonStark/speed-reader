@@ -24,6 +24,11 @@ export default function useVisualMode(chunkedData) {
       setDisplayChunk(() => list[index - 1].join(' '));
     }
   }
+  
+  function restart() {
+    setIndex(0);
+    setDisplayChunk(() => list[0].join(' '));
+  }
 
-  return { displayChunk, back, forward, finished };
+  return { displayChunk, back, forward, restart, finished };
 }
