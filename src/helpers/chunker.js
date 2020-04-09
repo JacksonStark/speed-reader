@@ -1,4 +1,5 @@
 export default function chunker(array, chunkSize) {
+  
   let chunks = [[]];
 
   array.forEach(word => {
