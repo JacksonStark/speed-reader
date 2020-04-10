@@ -23,7 +23,7 @@ export default function ReadingData() {
 
       if (readerData.length === 0) {
         // removing unwanted words from rawData
-        let cleansedData = stringFilter(rawData, excludedWords)
+        let cleansedData = stringFilter(rawData.split(' '), excludedWords.split(' '))
         
         console.log({cleansedData})
         
