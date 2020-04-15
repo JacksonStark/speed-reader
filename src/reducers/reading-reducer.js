@@ -1,6 +1,7 @@
 export const initialState = {
   rawData: `To get started, just copy and paste text that you would like to read in this text box. \n
-StarkReader will help you read faster by flashing words at you using what is called a Rapid Serial Visual Presentation.`,
+Stark Reader will help you read faster by flashing words at you using what is called a Rapid Serial Visual Presentation. \n
+Stare at the centre of each word chunk and immediately process it rather than reading it.`,
   readerData: [],
   readingSpeed: 300,
   excludedWords: '',
