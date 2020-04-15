@@ -1,17 +1,24 @@
 @import url('https://fonts.googleapis.com/css?family=Bungee&display=swap');
 
-.nav-bar {
+.nav-bar-home {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+  margin-left: 20px;
+  margin-bottom: 5px;
+}
 
+.nav-bar-reading {
   display: flex;
   justify-content: space-around;
   margin-left: 20px;
   margin-top: 20px;
   margin-bottom: 5px;
-
-
-  .logo {
-    font-family: 'Bungee', 'sans-serif';
-    font-size: 48px;
-    // color: white;
-  }
 }
+
+.logo {
+  font-family: 'Bungee', 'sans-serif';
+  font-size: 48px;
+  // color: white;
+}
+
